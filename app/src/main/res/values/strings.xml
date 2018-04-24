@@ -5,6 +5,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_tab">Search</string>
     <string name="fav_tab">Favourite</string>
+    <string name="info_tab">INFO</string>
+    <string name="photo_tab">PHOTOS</string>
+    <string name="map_tab">MAP</string>
+    <string name="review_tab">REVIEWS</string>
 
     <string-array name="category_arrays">
         <item>Default</item>
