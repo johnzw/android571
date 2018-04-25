@@ -38,7 +38,7 @@ public class InfoFragment extends Fragment {
             ((TextView)v.findViewById(R.id.textviewaddress)).setText(jsonObj.getString("formatted_address"));
             ((TextView)v.findViewById(R.id.textviewphone)).setText(jsonObj.getString("formatted_phone_number"));
             ((TextView)v.findViewById(R.id.textviewprice)).setText( "$$$$$".substring(0, jsonObj.getInt("price_level")) );
-            ((TextView)v.findViewById(R.id.textviewrating)).setText(jsonObj.getString("rating"));
+            ((TextView)v.findViewById(R.id.textviewrate)).setText(jsonObj.getString("rating"));
             ((TextView)v.findViewById(R.id.textviewgooglepage)).setText(jsonObj.getString("url"));
             ((TextView)v.findViewById(R.id.textviewwebsite)).setText(jsonObj.getString("website"));
         } catch (JSONException e) {
