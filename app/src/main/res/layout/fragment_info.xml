@@ -6,9 +6,112 @@
     tools:context=".InfoFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="34dp">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="27dp"
+                android:layout_height="match_parent"
+                android:text="Address" />
+
+            <TextView
+                android:id="@+id/textviewaddress"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:text="Phone Number" />
+
+            <TextView
+                android:id="@+id/textviewphone"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:autoLink = "phone"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:text="Price Level" />
+
+            <TextView
+                android:id="@+id/textviewprice"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:text="Rating" />
+
+            <TextView
+                android:id="@+id/textviewrating"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:text="Google Page" />
+
+            <TextView
+                android:id="@+id/textviewgooglepage"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:text="TextView" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:text="Website" />
+
+            <TextView
+                android:id="@+id/textviewwebsite"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:text="TextView" />
+        </TableRow>
+    </TableLayout>
 </FrameLayout>

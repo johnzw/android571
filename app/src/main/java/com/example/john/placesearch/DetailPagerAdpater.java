@@ -4,9 +4,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import org.json.JSONObject;
+
 public class DetailPagerAdpater extends FragmentStatePagerAdapter {
 
     private int mNumOfTabs;
+    JSONObject json;
     public DetailPagerAdpater(FragmentManager fm, int NumOfTabs) {
         super(fm);
         this.mNumOfTabs = NumOfTabs;
