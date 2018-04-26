@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +56,12 @@ public class AdapterPlace extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         Place current=data.get(position);
         myHolder.textName.setText(current.name);
         myHolder.textAddress.setText(current.address);
-
+        if(FavouritePlaces.isFavourite(current.id)){
+            myHolder.favButton.setImageResource(R.drawable.heart_fill_red);
+        }
+        else{
+            myHolder.favButton.setImageResource(R.drawable.heart_fill_white);
+        }
         // load image into imageview using glide
         Glide.with(context).load(current.icon)
                 .into(myHolder.imageView);
@@ -74,6 +80,7 @@ public class AdapterPlace extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         ImageView imageView;
         TextView textName;
         TextView textAddress;
+        ImageButton favButton;
         private RecyclerViewClickListener mListener;
 
         // create constructor to get widget reference
@@ -82,6 +89,23 @@ public class AdapterPlace extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             textName = (TextView) itemView.findViewById(R.id.textName);
             imageView = (ImageView) itemView.findViewById(R.id.iconcategory);
             textAddress = (TextView) itemView.findViewById(R.id.textAddress);
+            favButton = (ImageButton) itemView.findViewById(R.id.imagebuttonfav);
+            favButton.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    Place p = getPlace(getAdapterPosition());
+                    if(FavouritePlaces.isFavourite(p.id)){
+//                        ((ImageButton)v).setImageResource(R.drawable.heart_fill_white);
+                        FavouritePlaces.removeFromFavouritePlaces(p.id);
+                    }
+                    else{
+//                        ((ImageButton)v).setImageResource(R.drawable.heart_fill_red);
+                        FavouritePlaces.addToFavouritePlaces(p);
+                    }
+                    notifyDataSetChanged();
+                }
+            });
             itemView.setOnClickListener(this);
             mListener = listener;
         }

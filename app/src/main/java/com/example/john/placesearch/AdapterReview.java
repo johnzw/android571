@@ -17,7 +17,7 @@ public class AdapterReview extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private Context context;
     private LayoutInflater inflater;
     private RecyclerViewClickListener adapterListner;
-    List<Review> data;
+    public List<Review> data;
 
     // create constructor to innitilize context and data sent from MainActivity
     public AdapterReview(Context context, List<Review> data, RecyclerViewClickListener listener){
