@@ -23,7 +23,7 @@ public class AdapterPlace extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private Context context;
     private LayoutInflater inflater;
     private RecyclerViewClickListener adapterListner;
-    List<Place> data;
+    public List<Place> data;
     Place current;
     int currentPos=0;
 

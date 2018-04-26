@@ -96,7 +96,7 @@
         android:id="@+id/autocompeletelocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:completionHint="Type in the location" />
+        android:hint="Type in the location" />
 
     <LinearLayout
         android:layout_width="match_parent"

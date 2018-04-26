@@ -22,7 +22,7 @@ public class FavouritePlaces {
     public static void removeFromFavouritePlaces(String id){
         placeMap.remove(id);
         for(int i=0; i<placeList.size(); i++){
-            if(placeList.get(i).id == id){
+            if(placeList.get(i).id.equals(id)){
                 placeList.remove(i);
                 return;
             }

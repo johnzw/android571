@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RadioGroup;
@@ -65,7 +66,25 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        //Set adapter for autocomplete text view
+        final AutoCompleteTextView searchPlace = view.findViewById(R.id.autocompeletelocation);
+
+        CustomAutoCompleteAdapter adapter =  new CustomAutoCompleteAdapter(getContext());
+        searchPlace.setAdapter(adapter);
+        searchPlace.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //do something with the selection
+                searchPlace.setText(""+adapterView.getItemAtPosition(i));
+            }
+        });
+
         return v;
+    }
+    public void searchScreen(){
+        Intent i = new Intent();
+        i.setClass(getContext(), MainActivity.class);
+        startActivity(i);
     }
 
     @Override
@@ -73,8 +92,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.button3:
                 //validation
-                if(formValidate() != null){
-                    searchAndGo();
+                String searchURL = formValidate();
+                if( searchURL != null){
+                    searchAndGo(searchURL);
                 }
                 break;
             case R.id.button4:
@@ -103,25 +123,31 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     }
 
     private String formValidate() {
+        boolean flag = false;
         String keyword = ((TextView)this.view.findViewById(R.id.edittextkeyword)).getText().toString().trim();
         if(keyword.length() == 0){
             TextView textKeywordError = (TextView)this.view.findViewById(R.id.textviewkeyworderror);
             textKeywordError.setVisibility(View.VISIBLE);
+            flag = true;
         }
         String location = ((AutoCompleteTextView)this.view.findViewById(R.id.autocompeletelocation)).getText().toString().trim();
         if(location.length() == 0){
             TextView textLocationError = (TextView)this.view.findViewById(R.id.textviewlocationerror);
             textLocationError.setVisibility(View.VISIBLE);
+            flag = true;
         }
-        return null;
+        if(flag){
+            return null;
+        }
+        return "http://webhw8.us-east-2.elasticbeanstalk.com/server.php?keyword=coffe&category=default&distance=10&location=user&lat=34.0266&lng=-118.2831";
     }
 
-    private void searchAndGo() {
+    private void searchAndGo(String searchURL) {
         final ProgressDialog progress = new ProgressDialog(getContext());
         progress.setMessage("Fetching results");
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url ="http://webhw8.us-east-2.elasticbeanstalk.com/server.php?keyword=usc&category=default&distance=2&location=user&lat=34.0266&lng=-118.2831";
+        String url =searchURL;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

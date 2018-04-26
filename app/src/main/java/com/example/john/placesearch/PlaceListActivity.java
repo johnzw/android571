@@ -2,12 +2,14 @@ package com.example.john.placesearch;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class PlaceListActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.john.placesearch.PlaceListActivity.MESSAGE";
@@ -31,6 +34,9 @@ public class PlaceListActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
     private AdapterPlace mAdapter;
+    private Stack<List<Place>> previousPageStack;
+    private Stack<List<Place>> nextPageStack;
+    private String nextPageToken = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +45,99 @@ public class PlaceListActivity extends AppCompatActivity {
 
         //tool bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
+        toolbar.setTitle("Search Results");
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(SearchFragment.EXTRA_MESSAGE);
 
+        previousPageStack = new Stack<>();
+        nextPageStack = new Stack<>();
+
+        //set button listener
+        Button buttonPrevious = (Button) findViewById(R.id.buttonprevious);
+        buttonPrevious.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                if(!previousPageStack.empty()){
+                    nextPageStack.push(mAdapter.data);
+                    mAdapter.data = previousPageStack.pop();
+                    mAdapter.notifyDataSetChanged();
+
+                    setButtonEnable();
+                }
+            }
+        });
+
+        //set button listener
+        Button buttonNext = (Button) findViewById(R.id.buttonnext);
+        buttonNext.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                if(!nextPageStack.empty()){
+                    previousPageStack.push(mAdapter.data);
+                    mAdapter.data = nextPageStack.pop();
+                    mAdapter.notifyDataSetChanged();
+
+                    setButtonEnable();
+                }
+                else if(nextPageToken != null){
+                    previousPageStack.push(mAdapter.data);
+                    searchNextPage(nextPageToken);
+                }
+
+            }
+        });
+
         // Capture the layout's TextView and set the string as its text
-        parseJson(message);
+        List<Place> placeList = parseJson(message);
+
+        // Setup and Handover data to recyclerview
+        recyclerView = (RecyclerView)findViewById(R.id.placeNearbyList);
+        RecyclerViewClickListener listener = new RecyclerViewClickListener(){
+            @Override
+            public void onClick(View view, int position) {
+                Place place = mAdapter.getPlace(position);
+                Toast.makeText(PlaceListActivity.this, place.id, Toast.LENGTH_SHORT).show();
+                searchAndGo(place.id);
+            }
+        };
+        mAdapter = new AdapterPlace(PlaceListActivity.this, placeList, listener);
+
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(PlaceListActivity.this));
+
+        //Set up button enable
+        setButtonEnable();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void setButtonEnable() {
+        Button buttonPrevious = (Button) findViewById(R.id.buttonprevious);
+        Button buttonNext = (Button) findViewById(R.id.buttonnext);
+        if(!previousPageStack.empty()){
+            buttonPrevious.setEnabled(true);
+        }
+        else{
+            buttonPrevious.setEnabled(false);
+        }
+        if(!nextPageStack.empty() || nextPageToken != null){
+            buttonNext.setEnabled(true);
+        }
+        else{
+            buttonNext.setEnabled(false);
+        }
+
     }
 
     private void searchAndGo(String placeID) {
@@ -75,7 +167,38 @@ public class PlaceListActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    protected void parseJson(String result){
+    private void searchNextPage(String nextToken) {
+
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage("Fetching results");
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://homework8.us-west-2.elasticbeanstalk.com/api/nextPage/"+nextToken;
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progress.dismiss();
+                        List<Place> placeList = parseJson(response);
+                        mAdapter.data = placeList;
+                        mAdapter.notifyDataSetChanged();
+                        setButtonEnable();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //
+            }
+        });
+        progress.show();
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+
+    protected List<Place> parseJson(String result){
+        List<Place> placeList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(result);
 
@@ -83,8 +206,6 @@ public class PlaceListActivity extends AppCompatActivity {
             if(!jsonObject.get("status").equals("OK")){
                 //do something
             }
-
-            List<Place> placeList = new ArrayList<>();
 
             JSONArray jsonArray = jsonObject.getJSONArray("results");
             // Extract data from json and store into ArrayList as class objects
@@ -98,25 +219,13 @@ public class PlaceListActivity extends AppCompatActivity {
                 placeList.add(place);
             }
 
-            // Setup and Handover data to recyclerview
-            recyclerView = (RecyclerView)findViewById(R.id.placeNearbyList);
-            RecyclerViewClickListener listener = new RecyclerViewClickListener(){
-                @Override
-                public void onClick(View view, int position) {
-                    Place place = mAdapter.getPlace(position);
-                    Toast.makeText(PlaceListActivity.this, place.id, Toast.LENGTH_SHORT).show();
-                    searchAndGo(place.id);
-                }
-            };
-            mAdapter = new AdapterPlace(PlaceListActivity.this, placeList, listener);
-
-            recyclerView.setAdapter(mAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(PlaceListActivity.this));
+            nextPageToken = jsonObject.getString("next_page_token");
 
         } catch (JSONException e) {
             Toast.makeText(PlaceListActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+            nextPageToken = null;
         }
-
+        return placeList;
     }
 
     private void navigateToNext(String message) {
