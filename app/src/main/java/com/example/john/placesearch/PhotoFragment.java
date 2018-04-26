@@ -52,12 +52,12 @@ public class PhotoFragment extends Fragment {
         JSONObject jsonObj = ((PlaceDetailActivity)getActivity()).getContextJson();
         String placeId = "b85217d74722f6fec94a4135f209e13092d81a5e";
         try {
-            placeId = jsonObj.getString("id");
+            placeId = jsonObj.getString("place_id");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        placeId = "ChIJa147K9HX3IAR-lwiGIQv9i4";
+//        placeId = "ChIJa147K9HX3IAR-lwiGIQv9i4";
         final GeoDataClient mGeoDataClient = ((PlaceDetailActivity)getActivity()).getmGeoDataClient();
         final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(placeId);
 

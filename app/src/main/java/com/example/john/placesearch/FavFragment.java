@@ -1,6 +1,7 @@
 package com.example.john.placesearch;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import static com.example.john.placesearch.PlaceListActivity.EXTRA_MESSAGE;
 
@@ -53,15 +61,46 @@ public class FavFragment extends Fragment {
                 Place place = mAdapter.getPlace(position);
                 Toast.makeText(getContext(), place.id, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(getContext(), PlaceDetailActivity.class);
-                intent.putExtra(PlaceListActivity.EXTRA_MESSAGE, example_json);
-                startActivity(intent);
+                searchAndGo(place.id);
             }
         };
         mAdapter = new AdapterPlace(getContext(), FavouritePlaces.getPlaceList(), listener);
 
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    private void searchAndGo(String placeID) {
+
+        final ProgressDialog progress = new ProgressDialog(getContext());
+        progress.setMessage("Fetching results");
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url ="http://homework8.us-west-2.elasticbeanstalk.com/api/detail/"+placeID;
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progress.dismiss();
+                        navigateToNext(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //
+            }
+        });
+        progress.show();
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+
+    private void navigateToNext(String message) {
+        Intent intent = new Intent(getContext(), PlaceDetailActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 
 }

@@ -1,13 +1,22 @@
 package com.example.john.placesearch;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,11 +37,42 @@ public class PlaceListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_list);
 
+        //tool bar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
+        setSupportActionBar(toolbar);
+
         Intent intent = getIntent();
         String message = intent.getStringExtra(SearchFragment.EXTRA_MESSAGE);
 
         // Capture the layout's TextView and set the string as its text
         parseJson(message);
+    }
+
+    private void searchAndGo(String placeID) {
+
+        final ProgressDialog progress = new ProgressDialog(this);
+        progress.setMessage("Fetching results");
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://homework8.us-west-2.elasticbeanstalk.com/api/detail/"+placeID;
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progress.dismiss();
+                        navigateToNext(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //
+            }
+        });
+        progress.show();
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     protected void parseJson(String result){
@@ -51,7 +91,7 @@ public class PlaceListActivity extends AppCompatActivity {
             for(int i=0;i<jsonArray.length();i++){
                 JSONObject json_data = jsonArray.getJSONObject(i);
 
-                Place place = new Place(json_data.getString("id"),
+                Place place = new Place(json_data.getString("place_id"),
                                         json_data.getString("name"),
                                         json_data.getString("vicinity"),
                                         json_data.getString("icon"));
@@ -65,10 +105,7 @@ public class PlaceListActivity extends AppCompatActivity {
                 public void onClick(View view, int position) {
                     Place place = mAdapter.getPlace(position);
                     Toast.makeText(PlaceListActivity.this, place.id, Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(PlaceListActivity.this, PlaceDetailActivity.class);
-                    intent.putExtra(EXTRA_MESSAGE, example_json);
-                    startActivity(intent);
+                    searchAndGo(place.id);
                 }
             };
             mAdapter = new AdapterPlace(PlaceListActivity.this, placeList, listener);
@@ -81,4 +118,12 @@ public class PlaceListActivity extends AppCompatActivity {
         }
 
     }
+
+    private void navigateToNext(String message) {
+        Intent intent = new Intent(PlaceListActivity.this, PlaceDetailActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
+    }
+
+
 }

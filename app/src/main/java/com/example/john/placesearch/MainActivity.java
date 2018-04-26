@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
         // Create an instance of the tab layout from the view.
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         // Set the text for each tab.
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.search_tab));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.fav_tab));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.search_tab).setIcon(R.drawable.search));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.fav_tab).setIcon(R.drawable.heart_fill_white));
         // Set the tabs to fill the entire layout.
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 

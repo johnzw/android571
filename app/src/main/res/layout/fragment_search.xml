@@ -14,8 +14,16 @@
         android:layout_height="wrap_content"
         android:text="Keyword" />
 
+    <TextView
+        android:id="@+id/textviewkeyworderror"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please enter mandatory field"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="gone" />
+
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/edittextkeyword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -41,7 +49,7 @@
         android:text="Distance (in miles)" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/edittextdistance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -55,6 +63,7 @@
         android:text="From" />
 
     <RadioGroup
+        android:id="@+id/radiongrouplocation"
         android:layout_width="match_parent"
         android:layout_height="60dp">
 
@@ -63,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:checked="true"
             android:text="Current Location" />
 
         <RadioButton
@@ -74,15 +84,23 @@
 
     </RadioGroup>
 
+    <TextView
+        android:id="@+id/textviewlocationerror"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Please enter mandatory field"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="gone" />
+
     <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView3"
+        android:id="@+id/autocompeletelocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:completionHint="Type in the location" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/button3"

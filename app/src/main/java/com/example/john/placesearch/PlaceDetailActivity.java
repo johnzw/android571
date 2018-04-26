@@ -34,6 +34,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String message = intent.getStringExtra(PlaceListActivity.EXTRA_MESSAGE);
 
+
+
         // Capture the layout's TextView and set the string as its text
         contextJson = parseJson(message);
 
