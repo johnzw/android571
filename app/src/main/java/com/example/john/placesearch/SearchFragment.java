@@ -48,6 +48,23 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         Button bClear = (Button) v.findViewById(R.id.button4);
         bClear.setOnClickListener(this);
 
+        ((AutoCompleteTextView)view.findViewById(R.id.autocompeletelocation)).setEnabled(false);
+
+        RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.radiongrouplocation);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                if(checkedId == R.id.radioButton){
+                    ((AutoCompleteTextView)view.findViewById(R.id.autocompeletelocation)).setEnabled(false);
+                }
+                else if(checkedId == R.id.radioButton2){
+                    ((AutoCompleteTextView)view.findViewById(R.id.autocompeletelocation)).setEnabled(true);
+                }
+            }
+        });
+
         return v;
     }
 
