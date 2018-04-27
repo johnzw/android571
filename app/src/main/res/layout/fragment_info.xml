@@ -25,8 +25,7 @@
             <TextView
                 android:id="@+id/textviewaddress"
                 android:layout_width="328dp"
-                android:layout_height="match_parent"
-                android:text="TextView" />
+                android:layout_height="match_parent" />
         </LinearLayout>
 
         <LinearLayout
@@ -43,8 +42,7 @@
                 android:id="@+id/textviewphone"
                 android:layout_width="328dp"
                 android:layout_height="wrap_content"
-                android:autoLink="phone"
-                android:text="TextView" />
+                android:autoLink="phone" />
         </LinearLayout>
 
         <LinearLayout
@@ -60,8 +58,7 @@
             <TextView
                 android:id="@+id/textviewprice"
                 android:layout_width="328dp"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -97,8 +94,7 @@
                 android:id="@+id/textviewgooglepage"
                 android:layout_width="328dp"
                 android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:text="TextView" />
+                android:autoLink="web" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,8 +111,7 @@
                 android:id="@+id/textviewwebsite"
                 android:layout_width="328dp"
                 android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:text="TextView" />
+                android:autoLink="web" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
