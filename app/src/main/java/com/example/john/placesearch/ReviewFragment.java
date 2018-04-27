@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -44,6 +46,19 @@ public class ReviewFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_review, container, false);
         List<Review> reviewList = getGoogleDefault();
+
+        if(reviewList.size() == 0){
+            RecyclerView layout =  (RecyclerView)view.findViewById(R.id.recyclerviewreviews);
+            RelativeLayout textError =  (RelativeLayout)view.findViewById(R.id.layouterrorreiview);
+            layout.setVisibility(View.GONE);
+            textError.setVisibility(View.VISIBLE);
+        }
+        else{
+            RecyclerView layout =  (RecyclerView)view.findViewById(R.id.recyclerviewreviews);
+            RelativeLayout textError =  (RelativeLayout)view.findViewById(R.id.layouterrorreiview);
+            layout.setVisibility(View.VISIBLE);
+            textError.setVisibility(View.GONE);
+        }
         populateReview(view, reviewList);
         return view;
     }

@@ -32,4 +32,17 @@
         android:id="@+id/recyclerviewreviews"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/layouterrorreiview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/texterrorreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="No Review" />
+    </RelativeLayout>
 </LinearLayout>

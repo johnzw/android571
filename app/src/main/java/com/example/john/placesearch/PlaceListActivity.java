@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,23 +100,38 @@ public class PlaceListActivity extends AppCompatActivity {
         // Capture the layout's TextView and set the string as its text
         List<Place> placeList = parseJson(message);
 
+        if(placeList.size() == 0){
+            LinearLayout layout =  (LinearLayout)findViewById(R.id.layoutsearchlist);
+            RelativeLayout textError =  (RelativeLayout)findViewById(R.id.layouterror);
+            layout.setVisibility(View.GONE);
+            textError.setVisibility(View.VISIBLE);
+        }
+        else{
+            LinearLayout layout =  (LinearLayout)findViewById(R.id.layoutsearchlist);
+            RelativeLayout textError =  (RelativeLayout)findViewById(R.id.layouterror);
+            layout.setVisibility(View.VISIBLE);
+            textError.setVisibility(View.GONE);
+        }
+
         // Setup and Handover data to recyclerview
         recyclerView = (RecyclerView)findViewById(R.id.placeNearbyList);
         RecyclerViewClickListener listener = new RecyclerViewClickListener(){
-            @Override
-            public void onClick(View view, int position) {
-                Place place = mAdapter.getPlace(position);
+                @Override
+                public void onClick(View view, int position) {
+                    Place place = mAdapter.getPlace(position);
 //                Toast.makeText(PlaceListActivity.this, place.id, Toast.LENGTH_SHORT).show();
-                searchAndGo(place.id);
-            }
-        };
-        mAdapter = new AdapterPlace(PlaceListActivity.this, placeList, listener);
+                    searchAndGo(place.id);
+                }
+            };
+            mAdapter = new AdapterPlace(PlaceListActivity.this, placeList, listener);
 
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(PlaceListActivity.this));
+            recyclerView.setAdapter(mAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(PlaceListActivity.this));
 
-        //Set up button enable
-        setButtonEnable();
+            //Set up button enable
+            setButtonEnable();
+
+
     }
 
     @Override
@@ -204,7 +222,7 @@ public class PlaceListActivity extends AppCompatActivity {
 
             //test if the status is okay
             if(!jsonObject.get("status").equals("OK")){
-                //do something
+                return placeList;
             }
 
             JSONArray jsonArray = jsonObject.getJSONArray("results");

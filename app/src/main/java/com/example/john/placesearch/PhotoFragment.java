@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.location.places.GeoDataClient;
@@ -31,8 +33,7 @@ import org.json.JSONObject;
  * A simple {@link Fragment} subclass.
  */
 public class PhotoFragment extends Fragment {
-
-
+    private View view;
     public PhotoFragment() {
         // Required empty public constructor
     }
@@ -70,6 +71,19 @@ public class PhotoFragment extends Fragment {
                 PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
                 // Get the first photo in the list.
                 int size = photoMetadataBuffer.getCount();
+
+                if(size == 0){
+                    RecyclerView layout =  (RecyclerView)view.findViewById(R.id.recyclerphoto);
+                    RelativeLayout textError =  (RelativeLayout)view.findViewById(R.id.layouterrorphoto);
+                    layout.setVisibility(View.GONE);
+                    textError.setVisibility(View.VISIBLE);
+                }
+                else{
+                    RecyclerView layout =  (RecyclerView)view.findViewById(R.id.recyclerphoto);
+                    RelativeLayout textError =  (RelativeLayout)view.findViewById(R.id.layouterrorphoto);
+                    layout.setVisibility(View.VISIBLE);
+                    textError.setVisibility(View.GONE);
+                }
 
                 RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerphoto);
 

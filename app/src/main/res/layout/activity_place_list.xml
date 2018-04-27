@@ -15,38 +15,59 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/placeNearbyList"
+    <LinearLayout
+        android:id="@+id/layoutsearchlist"
         android:layout_width="match_parent"
-        android:layout_height="474dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/placeNearbyList"
+            android:layout_width="match_parent"
+            android:layout_height="460dp">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/linearLayout"
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/buttonprevious"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="8dp"
+                android:text="PREVIOUS"
+                app:layout_constraintBaseline_toBaselineOf="@+id/buttonnext"
+                app:layout_constraintEnd_toStartOf="@+id/buttonnext"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/buttonnext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="10dp"
+                android:text="NEXT"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonprevious" />
+        </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layouterror"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/buttonprevious"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="8dp"
-            android:text="PREVIOUS"
-            app:layout_constraintBaseline_toBaselineOf="@+id/buttonnext"
-            app:layout_constraintEnd_toStartOf="@+id/buttonnext"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/buttonnext"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="10dp"
-            android:text="NEXT"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/buttonprevious" />
-    </android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/texterror"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="No result" />
+    </RelativeLayout>
 
 </LinearLayout>
