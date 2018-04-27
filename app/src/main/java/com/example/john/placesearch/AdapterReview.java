@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -49,7 +50,7 @@ public class AdapterReview extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         //set views
         myHolder.textAuthor.setText(current.authorName);
-        myHolder.textRating.setText(""+current.rating);
+        myHolder.textRating.setRating(current.rating);
         myHolder.textTime.setText(Review.timeFormat.format(current.time));
         myHolder.textContent.setText(current.content);
 
@@ -69,7 +70,7 @@ public class AdapterReview extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         ImageView imageView;
         TextView textAuthor;
-        TextView textRating;
+        RatingBar textRating;
         TextView textTime;
         TextView textContent;
         private RecyclerViewClickListener mListener;
@@ -79,7 +80,7 @@ public class AdapterReview extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(itemView);
             textAuthor = (TextView) itemView.findViewById(R.id.textviewauthorname);
             imageView = (ImageView) itemView.findViewById(R.id.iconprofile);
-            textRating = (TextView) itemView.findViewById(R.id.textviewrate);
+            textRating = (RatingBar) itemView.findViewById(R.id.ratingBar2);
             textTime = (TextView) itemView.findViewById(R.id.textviewdatetime);
             textContent = (TextView) itemView.findViewById(R.id.textviewcontent);
             itemView.setOnClickListener(this);

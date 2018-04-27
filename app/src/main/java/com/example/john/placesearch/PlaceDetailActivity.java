@@ -120,9 +120,9 @@ public class PlaceDetailActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                content.replace("$(NAME)", name);
-                content.replace("$(ADDRESS)", address);
-                content.replace("$(URL)", webste);
+                content = content.replace("$(NAME)", name);
+                content = content.replace("$(ADDRESS)", address);
+                content = content.replace("$(URL)", webste);
 
                 try {
                     url += URLEncoder.encode(content, "UTF-8");
@@ -155,6 +155,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
                 else{
                     FavouritePlaces.addToFavouritePlaces(currentplace);
                     buttonFav.setImageResource(R.drawable.heart_fill_red);
+                    Toast.makeText(PlaceDetailActivity.this,
+                            currentplace.name + "was added to favourite", Toast.LENGTH_SHORT).show();
                 }
 
             }

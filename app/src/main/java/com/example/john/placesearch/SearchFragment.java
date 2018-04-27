@@ -23,6 +23,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -124,22 +127,52 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     private String formValidate() {
         boolean flag = false;
+
+        //keyword
         String keyword = ((TextView)this.view.findViewById(R.id.edittextkeyword)).getText().toString().trim();
         if(keyword.length() == 0){
             TextView textKeywordError = (TextView)this.view.findViewById(R.id.textviewkeyworderror);
             textKeywordError.setVisibility(View.VISIBLE);
             flag = true;
         }
-        String location = ((AutoCompleteTextView)this.view.findViewById(R.id.autocompeletelocation)).getText().toString().trim();
-        if(location.length() == 0){
-            TextView textLocationError = (TextView)this.view.findViewById(R.id.textviewlocationerror);
-            textLocationError.setVisibility(View.VISIBLE);
-            flag = true;
+        try {
+            keyword = URLEncoder.encode(keyword, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //distance
+        String distance = ((TextView)this.view.findViewById(R.id.edittextdistance)).getText().toString().trim();
+        if(distance.length() == 0){
+            distance = "10";
+        }
+        //category
+        String category = ((Spinner)this.view.findViewById(R.id.spinner2)).getSelectedItem().toString();
+        //from
+        String location;
+        String opt_location;
+        if(((RadioGroup)this.view.findViewById(R.id.radiongrouplocation)).getCheckedRadioButtonId() == R.id.radioButton){
+            //from current location
+            location = "user";
+            opt_location = "USC";
+        }
+        else{
+            location = "other";
+            opt_location = ((AutoCompleteTextView)this.view.findViewById(R.id.autocompeletelocation)).getText().toString().trim();
+            if(opt_location.length() == 0){
+                TextView textLocationError = (TextView)this.view.findViewById(R.id.textviewlocationerror);
+                textLocationError.setVisibility(View.VISIBLE);
+                flag = true;
+            }
+            try {
+                opt_location = URLEncoder.encode(opt_location, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
         if(flag){
             return null;
         }
-        return "http://webhw8.us-east-2.elasticbeanstalk.com/server.php?keyword=coffe&category=default&distance=10&location=user&lat=34.0266&lng=-118.2831";
+        return "http://webhw8.us-east-2.elasticbeanstalk.com/server.php?keyword=" + keyword + "&category=" + category+ "&distance=" +  distance +"&location=" + location +"&lat=34.0266&lng=-118.2831&opt_location=" + opt_location;
     }
 
     private void searchAndGo(String searchURL) {

@@ -101,6 +101,7 @@ public class AdapterPlace extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     }
                     else{
 //                        ((ImageButton)v).setImageResource(R.drawable.heart_fill_red);
+                        Toast.makeText(context, p.name + "was added to favourite", Toast.LENGTH_SHORT).show();
                         FavouritePlaces.addToFavouritePlaces(p);
                     }
                     notifyDataSetChanged();

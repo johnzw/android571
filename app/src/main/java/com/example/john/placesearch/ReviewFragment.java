@@ -1,6 +1,8 @@
 package com.example.john.placesearch;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -78,7 +80,11 @@ public class ReviewFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 Review r = mAdapter.getReview(position);
-                Toast.makeText(getContext(), r.authorURL, Toast.LENGTH_SHORT).show();
+                String url = r.authorURL;
+
+                Uri uriUrl = Uri.parse(url);
+                Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+                startActivity(launchBrowser);
             }
         };
         mAdapter = new AdapterReview(getContext(), reviewList, listener);
@@ -91,7 +97,7 @@ public class ReviewFragment extends Fragment {
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), position+"", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), position+"", Toast.LENGTH_SHORT).show();
                 switch (position){
                     case 0:
                         mAdapter.data = getGoogleDefault();

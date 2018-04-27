@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -38,7 +39,7 @@ public class InfoFragment extends Fragment {
             ((TextView)v.findViewById(R.id.textviewaddress)).setText(jsonObj.getString("formatted_address"));
             ((TextView)v.findViewById(R.id.textviewphone)).setText(jsonObj.getString("formatted_phone_number"));
             ((TextView)v.findViewById(R.id.textviewprice)).setText( "$$$$$".substring(0, jsonObj.getInt("price_level")) );
-            ((TextView)v.findViewById(R.id.textviewrate)).setText(jsonObj.getString("rating"));
+            ((RatingBar)v.findViewById(R.id.ratingBar)).setRating((float) jsonObj.getDouble("rating"));
             ((TextView)v.findViewById(R.id.textviewgooglepage)).setText(jsonObj.getString("url"));
             ((TextView)v.findViewById(R.id.textviewwebsite)).setText(jsonObj.getString("website"));
         } catch (JSONException e) {

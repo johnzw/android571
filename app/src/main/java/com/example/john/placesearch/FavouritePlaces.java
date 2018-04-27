@@ -17,6 +17,7 @@ public class FavouritePlaces {
     public static void addToFavouritePlaces(Place place){
         placeMap.add(place.id);
         placeList.addFirst(place);
+
     }
 
     public static void removeFromFavouritePlaces(String id){

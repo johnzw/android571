@@ -103,7 +103,7 @@ public class PlaceListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Place place = mAdapter.getPlace(position);
-                Toast.makeText(PlaceListActivity.this, place.id, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PlaceListActivity.this, place.id, Toast.LENGTH_SHORT).show();
                 searchAndGo(place.id);
             }
         };
